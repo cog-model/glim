@@ -67,6 +67,7 @@ OdometryEstimationCT::OdometryEstimationCT(const OdometryEstimationCTParams& par
   }
   isam2_params.relinearizeSkip = params.isam2_relinearize_skip;
   isam2_params.setRelinearizeThreshold(params.isam2_relinearize_thresh);
+  isam2_params.findUnusedFactorSlots = true;
   smoother.reset(new FixedLagSmootherExt(params.smoother_lag, isam2_params));
 
 #ifdef GTSAM_USE_TBB
@@ -267,6 +268,8 @@ EstimationFrame::ConstPtr OdometryEstimationCT::insert_frame(const PreprocessedF
       break;
     }
   }
+
+  std::cout << "factorgraph size:"  << smoother->getFactors().size() << "factorgraph non-null size:  " << smoother->getFactors().nrFactors() << std::endl;
 
   std::vector<EstimationFrame::ConstPtr> active_frames(frames.begin() + marginalized_cursor, frames.end());
   Callbacks::on_update_frames(active_frames);
