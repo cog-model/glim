@@ -30,7 +30,7 @@
     "vgicp_voxelmap_levels": 1,
     "vgicp_voxelmap_scaling_factor": 2.0,
     // Optimizer params
-    "save_imu_rate_trajectory": true,
+    "save_imu_rate_trajectory": false,
     "num_threads": 2
   }
 }

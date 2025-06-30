@@ -121,7 +121,7 @@ void GlobalMapping::insert_imu(const double stamp, const Eigen::Vector3d& linear
 }
 
 void GlobalMapping::insert_submap(const SubMap::Ptr& submap) {
-  logger->debug("insert_submap id={} |frame|={}", submap->id, submap->frame->size());
+  logger->info("insert_submap id={} |frame|={}", submap->id, submap->frame->size());
 
   const int current = submaps.size();
   const int last = current - 1;
@@ -214,15 +214,18 @@ void GlobalMapping::insert_submap(const SubMap::Ptr& submap) {
     }
   }
 
+  logger->info("Started updating ISAM2");
   Callbacks::on_smoother_update(*isam2, *new_factors, *new_values);
   auto result = update_isam2(*new_factors, *new_values);
   Callbacks::on_smoother_update_result(*isam2, result);
+  logger->info("Ended updating ISAM2");
 
   new_values.reset(new gtsam::Values);
   new_factors.reset(new gtsam::NonlinearFactorGraph);
 
   update_submaps();
   Callbacks::on_update_submaps(submaps);
+  logger->info("done!");
 }
 
 void GlobalMapping::insert_submap(int current, const SubMap::Ptr& submap) {
@@ -352,6 +355,7 @@ void GlobalMapping::optimize() {
     return;
   }
 
+  logger->info("Global optimization started");
   gtsam::NonlinearFactorGraph new_factors;
   gtsam::Values new_values;
   Callbacks::on_smoother_update(*isam2, new_factors, new_values);
@@ -361,6 +365,7 @@ void GlobalMapping::optimize() {
 
   update_submaps();
   Callbacks::on_update_submaps(submaps);
+  logger->info("Global optimization finished");
 }
 
 boost::shared_ptr<gtsam::NonlinearFactorGraph> GlobalMapping::create_between_factors(int current) const {
