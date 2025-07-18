@@ -362,7 +362,7 @@ void GlobalMapping::optimize() {
     return;
   }
 
-  logger->debug("|new_factors|={} |new_values|={}", new_factors->size(), new_values->size());
+  logger->info("|new_factors|={} |new_values|={}", new_factors->size(), new_values->size());
 
   Callbacks::on_smoother_update(*isam2, *new_factors, *new_values);
   auto result = update_isam2(*new_factors, *new_values);
