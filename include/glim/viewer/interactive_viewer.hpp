@@ -4,6 +4,7 @@
 #include <memory>
 #include <thread>
 #include <vector>
+#include <boost/shared_ptr.hpp>
 
 #include <Eigen/Core>
 #include <Eigen/Geometry>
@@ -128,7 +129,7 @@ protected:
   std::vector<std::tuple<FactorType, std::uint64_t, std::uint64_t>> global_factors;
 
   // Factors to be inserted into the global mapping graph
-  ConcurrentVector<std::shared_ptr<gtsam::NonlinearFactor>> new_factors;
+  ConcurrentVector<boost::shared_ptr<gtsam::NonlinearFactor>> new_factors;
 
   // Logging
   std::shared_ptr<spdlog::logger> logger;

@@ -605,7 +605,7 @@ void InteractiveViewer::globalmap_on_smoother_update(gtsam_points::ISAM2Ext& isa
 
   // Explicitly move the poses of merged submaps to the coordinate system of the origin of the first session
   for (const auto& factor : factors) {
-    auto between = dynamic_cast<const gtsam::BetweenFactor<gtsam::Pose3>*>(factor.get());
+    auto between = boost::dynamic_pointer_cast<const gtsam::BetweenFactor<gtsam::Pose3>>(factor);
     if (!between) {
       continue;
     }
@@ -650,18 +650,18 @@ void InteractiveViewer::globalmap_on_smoother_update(gtsam_points::ISAM2Ext& isa
   std::vector<std::tuple<FactorType, gtsam::Key, gtsam::Key>> inserted_factors;
 
   for (const auto& factor : new_factors) {
-    if (dynamic_cast<gtsam::BetweenFactor<gtsam::Pose3>*>(factor.get())) {
+    if (boost::dynamic_pointer_cast<gtsam::BetweenFactor<gtsam::Pose3>>(factor)) {
       inserted_factors.push_back(std::make_tuple(FactorType::BETWEEN, factor->keys()[0], factor->keys()[1]));
     }
-    if (dynamic_cast<gtsam_points::IntegratedMatchingCostFactor*>(factor.get())) {
+    if (boost::dynamic_pointer_cast<gtsam_points::IntegratedMatchingCostFactor>(factor)) {
       inserted_factors.push_back(std::make_tuple(FactorType::MATCHING_COST, factor->keys()[0], factor->keys()[1]));
     }
 #ifdef GTSAM_POINTS_USE_CUDA
-    if (dynamic_cast<gtsam_points::IntegratedVGICPFactorGPU*>(factor.get())) {
+    if (boost::dynamic_pointer_cast<gtsam_points::IntegratedVGICPFactorGPU>(factor)) {
       inserted_factors.push_back(std::make_tuple(FactorType::MATCHING_COST, factor->keys()[0], factor->keys()[1]));
     }
 #endif
-    if (dynamic_cast<gtsam::ImuFactor*>(factor.get())) {
+    if (boost::dynamic_pointer_cast<gtsam::ImuFactor>(factor)) {
       inserted_factors.push_back(std::make_tuple(FactorType::IMU, factor->keys()[0], factor->keys()[2]));
     }
   }

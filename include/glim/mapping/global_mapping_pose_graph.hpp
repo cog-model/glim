@@ -5,6 +5,7 @@
 #include <memory>
 #include <random>
 #include <thread>
+#include <boost/shared_ptr.hpp>
 #include <glim/util/concurrent_vector.hpp>
 #include <glim/mapping/global_mapping_base.hpp>
 
@@ -102,9 +103,9 @@ public:
 private:
   void insert_submap(int current, const SubMap::Ptr& submap);
 
-  std::shared_ptr<gtsam::NonlinearFactorGraph> create_odometry_factors(int current) const;
+  boost::shared_ptr<gtsam::NonlinearFactorGraph> create_odometry_factors(int current) const;
   void find_loop_candidates(int current);
-  std::shared_ptr<gtsam::NonlinearFactorGraph> collect_detected_loops();
+  boost::shared_ptr<gtsam::NonlinearFactorGraph> collect_detected_loops();
 
   void update_submaps();
 
@@ -119,7 +120,7 @@ private:
   std::atomic_bool kill_switch;
   std::thread loop_detection_thread;
   ConcurrentVector<LoopCandidate> loop_candidates;
-  ConcurrentVector<std::shared_ptr<gtsam::NonlinearFactor>> detected_loops;
+  ConcurrentVector<boost::shared_ptr<gtsam::NonlinearFactor>> detected_loops;
 
   std::vector<SubMap::Ptr> submaps;
   std::vector<SubMapTarget::Ptr> submap_targets;

@@ -13,7 +13,7 @@ sudo apt install libomp-dev libboost-all-dev libmetis-dev \
 
 # Install GTSAM
 git clone https://github.com/borglab/gtsam
-cd gtsam && git checkout 4.3a0
+cd gtsam && git checkout 4.2a9
 mkdir build && cd build
 cmake .. -DGTSAM_BUILD_EXAMPLES_ALWAYS=OFF \
          -DGTSAM_BUILD_TESTS=OFF \
@@ -42,6 +42,23 @@ sudo make install
 
 # Make shared libraries visible to the system
 sudo ldconfig
+```
+
+### Install GLIM for ROS1
+
+```bash
+cd ~/catkin_ws/src
+git clone https://github.com/koide3/glim
+git clone https://github.com/koide3/glim_ros1
+
+cd ~/catkin_ws
+catkin_make
+
+# cmake options
+# catkin_make \
+#   -DBUILD_WITH_CUDA=ON \
+#   -DBUILD_WITH_VIEWER=ON \
+#   -DBUILD_WITH_MARCH_NATIVE=OFF
 ```
 
 ### Install GLIM for ROS2
@@ -122,5 +139,10 @@ sudo apt install -y ros-humble-glim-ros            # Without CUDA
 sudo apt install -y ros-humble-glim-ros-cuda12.2   # With CUDA 12.2
 sudo apt install -y ros-humble-glim-ros-cuda12.5   # With CUDA 12.5
 sudo apt install -y ros-humble-glim-ros-cuda12.6   # With CUDA 12.6
+
+# ROS1 noetic (Ubuntu 20.04)
+sudo apt install -y ros-noetic-glim-ros            # Without CUDA
+sudo apt install -y ros-noetic-glim-ros-cuda12.2   # With CUDA 12.2
+sudo apt install -y ros-noetic-glim-ros-cuda12.5   # With CUDA 12.5
 ```
 
